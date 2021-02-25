@@ -3,8 +3,12 @@ import express from 'express';
 //Model
 import Post from '../../models/post'
 import auth from "../../middleware/auth";
+import "@babel/polyfill";
 
 const router = express.Router() 
+
+
+//post 데이터 가져오기
 
 //api/post
 router.get('/', async(req, res) => {
@@ -13,6 +17,8 @@ router.get('/', async(req, res) => {
     res.json(postFindResult)
 })
 
+
+//Post 새로 생성하기
 router.post('/', auth, async(req, res, next) => {
     try{
         console.log(req, "req")

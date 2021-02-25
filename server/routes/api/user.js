@@ -12,6 +12,11 @@ import User from '../../models/user';
 
 const router = express.Router()
 
+
+
+
+//회원 정보 모두 가져오기
+
 // @routes   Get api/user
 // @desc     Get all user
 // @access   Public
@@ -27,6 +32,10 @@ router.get('/', async(req, res) => {
     }
 });
 
+
+
+
+//회원 가입
 
 // @routes   Post api/user
 // @desc     Register user
@@ -49,6 +58,7 @@ router.post('/', (req, res) => {
             name, email, password
         })
 
+    //회원 정보 암호화 처리
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newUser.password, salt, (err, hash) => {
                 if(err) throw err;

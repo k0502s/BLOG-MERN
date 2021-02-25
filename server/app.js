@@ -9,7 +9,7 @@ import cors from "cors";
 //Routes
 import postRoutes from './routes/api/post';
 import userRoutes from "./routes/api/user";
-// import authRoutes from "./routes/api/auth";
+import authRoutes from "./routes/api/auth";
 // import searchRoutes from "./routes/api/search";
 
 
@@ -36,11 +36,12 @@ mongoose.connect(MONGO_URI, {
 .then(() => console.log("MongoDB connection Success"))
 .catch((e) => console.log(e));
 
+
 // Use routes
 app.get('/');
 app.use("/api/post", postRoutes);
 app.use("/api/user", userRoutes);
-// app.use("/api/auth", authRoutes);
+app.use("/api/auth", authRoutes);
 // app.use("/api/search", searchRoutes);
 
 export default app;
