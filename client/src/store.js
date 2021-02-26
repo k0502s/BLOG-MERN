@@ -2,6 +2,9 @@ import { createStore, compose, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { createBrowserHistory } from 'history';
 import { routerMiddleware } from 'connected-react-router';
+import Thunk from 'redux-thunk';
+import promiseMiddleware from 'redux-promise';
+
 
 import createRootReducer from './redux/reducers/index';
 import rootSaga from './redux/sagas'
@@ -12,7 +15,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 const initialState = {} // state 초기값
 
-const middlewares = [sagaMiddleware, routerMiddleware(history)]
+const middlewares = [Thunk, sagaMiddleware, routerMiddleware(history), promiseMiddleware]
 const devtools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
 
 const composeEnhancer =

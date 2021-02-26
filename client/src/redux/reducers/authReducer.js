@@ -1,14 +1,18 @@
-import { 
-    LOGIN_REQUEST, 
-    LOGIN_SUCCESS, 
-    LOGIN_FAILURE, 
+import {
+    LOGIN_REQUEST,
+    LOGIN_SUCCESS,
+    LOGIN_FAILURE,
     CLEAR_ERROR_REQUEST,
     CLEAR_ERROR_SUCCESS,
     CLEAR_ERROR_FAILURE,
     LOGOUT_REQUEST,
-    LOGOUT_FAILURE,
     LOGOUT_SUCCESS,
- } from '../types'
+    LOGOUT_FAILURE,
+    USER_LOADING_REQUEST,
+    USER_LOADING_SUCCESS,
+    USER_LOADING_FAILURE,
+  } from "../types";
+
 
 const initialState = {
     token: localStorage.getItem('token'),
@@ -18,6 +22,7 @@ const initialState = {
     userId: "",
     userName: "",
     userRole: "",
+    userRole2:"",
     errorMsg: "",
     successMsg: ""
 }
@@ -40,6 +45,7 @@ const authReducer = (state = initialState, action) => {
                 isLoading: false,
                 userId: action.payload.user.id,
                 userRole: action.payload.user.role,
+                userRole2: action.payload.role2,
                 errorMsg: "",
             };
             case LOGOUT_SUCCESS:
@@ -51,6 +57,7 @@ const authReducer = (state = initialState, action) => {
                 isAuthenticated: false,
                 isLoading: false,
                 userRole: null,
+                userRole2: null,
                 errorMsg: "",
             };
 
@@ -66,24 +73,51 @@ const authReducer = (state = initialState, action) => {
                 isAuthenticated: false,
                 isLoading: false,
                 userRole: null,
-                errorMsg: action.payload.data.msg
+                userRole2: null,
+                errorMsg: action.payload.data.msg,
             }
             
             case CLEAR_ERROR_REQUEST:
             return {
                 ...state,
                 errorMsg: null
+                
             }
             case CLEAR_ERROR_SUCCESS:
             return {
                 ...state,
                 errorMsg: null
-            }
+            };
             case CLEAR_ERROR_FAILURE:
             return {
                 ...state,
                 errorMsg: null
-            }
+            };
+            case USER_LOADING_REQUEST:
+                return {
+                  ...state,
+                  isLoading: true,
+                };
+
+            case USER_LOADING_SUCCESS:
+                return {
+                  ...state,
+                  userRole2: action.payload.role2 === 0 ? false : true,
+                  isAuthenticated: true,
+                  isLoading: false,
+                  user: action.payload,
+                  userId: action.payload._id,
+                  userName: action.payload.name,
+                  userRole: action.payload.role,
+                };
+              case USER_LOADING_FAILURE:
+                return {
+                  ...state,
+                  user: null,
+                  isAuthenticated: false,
+                  isLoading: false,
+                  userRole: "",
+                };
             default:
                 return state;             
     }

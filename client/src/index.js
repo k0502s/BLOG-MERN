@@ -1,10 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import loadUser from "./components/auth/loadUser";
 
-ReactDOM.render(
- 
-    <App />,
-  document.getElementById('root')
-);
+loadUser();
 
+ReactDOM.render(<App />, document.getElementById("root"));
