@@ -74,7 +74,7 @@ const RegisterModal = () => {
                 name="name"
                 id="name"
                 placeholder="Name"
-                onChange={onChange} 
+                onChange={onChange}
               />
               <Label for="email">Email</Label>
               <Input

@@ -10,6 +10,12 @@ import {
   USER_LOADING_SUCCESS,
   USER_LOADING_FAILURE,
   USER_LOADING_REQUEST,
+  REGISTER_SUCCESS,
+  REGISTER_FAILURE,
+  REGISTER_REQUEST,
+  CLEAR_ERROR_SUCCESS,
+  CLEAR_ERROR_FAILURE,
+  CLEAR_ERROR_REQUEST,
 } from "../types";
 
 
@@ -64,14 +70,57 @@ function* watchlogout() {
   yield takeEvery(LOGOUT_REQUEST, logout);
 }
 
+// Register
 
+const registerUserAPI = (req) => {
+  console.log(req, "req");
 
+  return axios.post("api/user", req);
+};
 
+function* registerUser(action) {
+  try {
+    const result = yield call(registerUserAPI, action.payload);
+    console.log(result, "RegisterUser Data");
+    yield put({
+      type: REGISTER_SUCCESS,
+      payload: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: REGISTER_FAILURE,
+      payload: e.response,
+    });
+  }
+}
 
-  // User Loading
+function* watchregisterUser() {
+  yield takeEvery(REGISTER_REQUEST, registerUser);
+}
+
+// clear Error
+
+function* clearError() {
+  try {
+    yield put({
+      type: CLEAR_ERROR_SUCCESS,
+    });
+  } catch (e) {
+    yield put({
+      type: CLEAR_ERROR_FAILURE,
+    });
+    console.error(e);
+  }
+}
+
+function* watchclearError() {
+  yield takeEvery(CLEAR_ERROR_REQUEST, clearError);
+}
+
+// User Loading
 
 const userLoadingAPI = (token) => {
-  console.log(token, "token");
+  console.log(token);
 
   const config = {
     headers: {
@@ -111,5 +160,7 @@ export default function* authSaga() {
     fork(watchLoginUser),
     fork(watchlogout),
     fork(watchuserLoading),
+    fork(watchregisterUser),
+    fork(watchclearError),
   ]);
 }

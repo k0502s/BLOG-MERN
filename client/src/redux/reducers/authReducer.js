@@ -11,33 +11,38 @@ import {
     USER_LOADING_REQUEST,
     USER_LOADING_SUCCESS,
     USER_LOADING_FAILURE,
+    REGISTER_REQUEST,
+    REGISTER_SUCCESS,
+    REGISTER_FAILURE,
   } from "../types";
 
 
-const initialState = {
-    token: localStorage.getItem('token'),
+  const initialState = {
+    token: localStorage.getItem("token"),
     isAuthenticated: null,
     isLoading: false,
     user: "",
     userId: "",
     userName: "",
     userRole: "",
-    userRole2:"",
     errorMsg: "",
-    successMsg: ""
-}
+    successMsg: "",
+    previousMatchMsg: "",
+  };
 
-const authReducer = (state = initialState, action) => {
-    switch(action.type){
-        case LOGOUT_REQUEST:
-        case LOGIN_REQUEST:
+        const authReducer = (state = initialState, action) => {
+            switch(action.type){
+            case REGISTER_REQUEST:
+            case LOGIN_REQUEST:
+            case LOGOUT_REQUEST:
             return {
                 ...state,
                 errorMsg: "",
                 isLoading: true,
-            }
+            };
+            case REGISTER_SUCCESS:
             case LOGIN_SUCCESS:
-                localStorage.setItem('token', action.payload.token);
+            localStorage.setItem("token", action.payload.token);
             return {
                 ...state,
                 ...action.payload,
@@ -45,25 +50,13 @@ const authReducer = (state = initialState, action) => {
                 isLoading: false,
                 userId: action.payload.user.id,
                 userRole: action.payload.user.role,
-                userRole2: action.payload.role2,
-                errorMsg: "",
-            };
-            case LOGOUT_SUCCESS:
-                localStorage.removeItem('token');
-            return {
-                token: null,
-                user: null,
-                userId: null,
-                isAuthenticated: false,
-                isLoading: false,
-                userRole: null,
-                userRole2: null,
                 errorMsg: "",
             };
 
-            case LOGOUT_FAILURE:
+            case REGISTER_FAILURE:
             case LOGIN_FAILURE:
-                localStorage.removeItem('token');
+            case LOGOUT_FAILURE:
+            localStorage.removeItem("token");
             return {
                 ...state,
                 ...action.payload,
@@ -73,36 +66,46 @@ const authReducer = (state = initialState, action) => {
                 isAuthenticated: false,
                 isLoading: false,
                 userRole: null,
-                userRole2: null,
                 errorMsg: action.payload.data.msg,
-            }
-            
+            };
+            case LOGOUT_SUCCESS:
+            localStorage.removeItem("token");
+            return {
+                token: null,
+                user: null,
+                userId: null,
+                isAuthenticated: false,
+                isLoading: false,
+                userRole: null,
+                errorMsg: "",
+            };
+
+                    
             case CLEAR_ERROR_REQUEST:
-            return {
+                return {
                 ...state,
-                errorMsg: null
-                
-            }
+                };
             case CLEAR_ERROR_SUCCESS:
-            return {
+                return {
                 ...state,
-                errorMsg: null
-            };
+                errorMsg: "",
+                previousMatchMsg: "",
+                };
             case CLEAR_ERROR_FAILURE:
-            return {
+                return {
                 ...state,
-                errorMsg: null
-            };
+                errorMsg: "Clear Error Fail",
+                previousMatchMsg: "Clear Error Fail",
+                };
+
             case USER_LOADING_REQUEST:
                 return {
                   ...state,
                   isLoading: true,
                 };
-
-            case USER_LOADING_SUCCESS:
+              case USER_LOADING_SUCCESS:
                 return {
                   ...state,
-                  userRole2: action.payload.role2 === 0 ? false : true,
                   isAuthenticated: true,
                   isLoading: false,
                   user: action.payload,
