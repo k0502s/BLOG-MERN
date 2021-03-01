@@ -21,10 +21,10 @@ const UserSchema = new mongoose.Schema({
     enum: ["MainJuin", "SubJuin", "User"],
     default: "User",
   },
-  role2 : {
-    type:Number,
-    default: 0 
-},
+//   role2 : {
+//     type:Number,
+//     default: 0 
+// },
   register_date: {
     type: Date,
     default: moment().format("YYYY-MM-DD hh:mm:ss"),

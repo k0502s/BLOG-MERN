@@ -18,7 +18,7 @@ const PostSchema = new mongoose.Schema({
     },
     fileUrl: {
         type: String,
-        default: "http://source.unsplash.com/readom/301x201",
+        default: "https://source.unsplash.com/random/301x201",
     },
     category: {
         type: mongoose.Schema.Types.ObjectId,
