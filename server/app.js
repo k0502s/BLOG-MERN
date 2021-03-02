@@ -31,6 +31,7 @@ mongoose.connect(MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
+    useFindAndModify: false,
     
 })
 .then(() => console.log("MongoDB connection Success"))
