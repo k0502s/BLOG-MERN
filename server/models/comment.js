@@ -4,7 +4,7 @@ import moment from 'moment';
 
 //Create Schema
 const CommentSchema = new mongoose.Schema({
-    conetents: {
+    contents: {
         type: String,
         required: true,
     },

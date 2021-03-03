@@ -32,11 +32,11 @@ const UserSchema = new mongoose.Schema({
   comments: [
     {
       post_id: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId, //
         ref: "posts",
       },
       comment_id: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId, //post 삭제시 댓글도 함께 삭제하기 위하여 결합
         ref: "comments",
       },
     },
