@@ -52,3 +52,9 @@
   textarea {
     resize: none;
   }
+
+  .my_category {
+    &:last-child {
+      margin-bottom: 0.25rem;
+    }
+  }

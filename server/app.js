@@ -10,7 +10,7 @@ import cors from "cors";
 import postRoutes from './routes/api/post';
 import userRoutes from "./routes/api/user";
 import authRoutes from "./routes/api/auth";
-// import searchRoutes from "./routes/api/search";
+import searchRoutes from "./routes/api/search";
 
 
 import morgan from 'morgan';
@@ -43,6 +43,6 @@ app.get('/');
 app.use("/api/post", postRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
-// app.use("/api/search", searchRoutes);
+app.use("/api/search", searchRoutes);
 
 export default app;

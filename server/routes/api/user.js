@@ -75,15 +75,35 @@ router.post("/", (req, res) => {
   });
 });
 
+
+
+
 // @route    POST   api/user/:username/profile
 // @desc     POST   Edit Password
 // @access   Private
 
 router.post("/:userName/profile", auth, async (req, res) => {
   try {
-    const { previousPassword, password, rePassword, userId } = req.body;
+    const { previousPassword, password, rePassword, userId, email, name } = req.body;
     console.log(req.body, "userName Profile");
     const result = await User.findById(userId, "password");
+    // Check for existing user
+  //  const user = User.findOne({ email })
+  //     if (user)
+  //       return res.status(400).json({ msg: "이미 가입된 유저가 존재합니다" });
+    
+  //   if(!user) {
+  //     await User.findByIdAndUpdate(
+  //       userId,
+  //       {
+  //         name,
+  //         email,
+  //       },
+  //       { new: true } //몽고DB 업데이트 조건
+  //     );
+  //   }
+    
+    
 
     bcrypt.compare(previousPassword, result.password).then((isMatch) => {
       if (!isMatch) {
@@ -96,6 +116,8 @@ router.post("/:userName/profile", auth, async (req, res) => {
             bcrypt.hash(password, salt, (err, hash) => {
               if (err) throw err;
               result.password = hash;
+              result.name = name
+              result.email = email
               result.save();
             });
           });
@@ -113,5 +135,8 @@ router.post("/:userName/profile", auth, async (req, res) => {
     console.log(e);
   }
 });
+
+
+ 
 
 export default router;

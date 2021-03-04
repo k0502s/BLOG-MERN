@@ -170,12 +170,148 @@ function* watchDeletePost() {
 
 
 
-  export default function* postSaga() {
-    yield all([
-      fork(watchLoadPosts),
-      fork(watchuploadPosts),
-      fork(watchloadPostDetail),
-      fork(watchDeletePost),
-      
-    ]);
+// Post Edit Load
+const PostEditLoadAPI = (payload) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  const token = payload.token;
+
+  if (token) {
+    config.headers["x-auth-token"] = token;
   }
+
+  return axios.get(`/api/post/${payload.id}/edit`, config);
+};
+
+function* PostEditLoad(action) {
+  try {
+    const result = yield call(PostEditLoadAPI, action.payload);
+    yield put({
+      type: POST_EDIT_LOADING_SUCCESS,
+      payload: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: POST_EDIT_LOADING_FAILURE,
+      payload: e,
+    });
+    yield put(push("/"));
+  }
+}
+
+function* watchPostEditLoad() {
+  yield takeEvery(POST_EDIT_LOADING_REQUEST, PostEditLoad);
+}
+
+
+
+
+// Post Edit UpLoad
+const PostEditUploadAPI = (payload) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  const token = payload.token;
+
+  if (token) {
+    config.headers["x-auth-token"] = token;
+  }
+
+  return axios.post(`/api/post/${payload.id}/edit`, payload, config);
+};
+
+function* PostEditUpload(action) {
+  try {
+    const result = yield call(PostEditUploadAPI, action.payload);
+    yield put({
+      type: POST_EDIT_UPLOADING_SUCCESS,
+      payload: result.data,
+    });
+    yield put(push(`/post/${result.data._id}`));
+  } catch (e) {
+    yield put({
+      type: POST_EDIT_UPLOADING_FAILURE,
+      payload: e,
+    });
+  }
+}
+
+function* watchPostEditUpload() {
+  yield takeEvery(POST_EDIT_UPLOADING_REQUEST, PostEditUpload);
+}
+
+
+
+// Category Find
+const CategoryFindAPI = (payload) => {  //encodeURIComponent은 한글과 같은 문자들을 인식할 수 있는 코드로 바꿔줌
+  return axios.get(`/api/post/category/${encodeURIComponent(payload)}`);
+};
+
+function* CategoryFind(action) {
+  try {
+    const result = yield call(CategoryFindAPI, action.payload);
+    yield put({
+      type: CATEGORY_FIND_SUCCESS,
+      payload: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: CATEGORY_FIND_FAILURE,
+      payload: e,
+    });
+  }
+}
+
+function* watchCategoryFind() {
+  yield takeEvery(CATEGORY_FIND_REQUEST, CategoryFind);
+}
+
+
+
+
+  // Search Find
+const SearchResultAPI = (payload) => {
+  return axios.get(`/api/search/${encodeURIComponent(payload)}`);
+};
+
+function* SearchResult(action) {
+  try {
+    const result = yield call(SearchResultAPI, action.payload);
+    yield put({
+      type: SEARCH_SUCCESS,
+      payload: result.data,
+    });
+    yield put(push(`/search/${encodeURIComponent(action.payload)}`));
+  } catch (e) {
+    yield put({
+      type: SEARCH_FAILURE,
+      payload: e,
+    });
+    yield put(push("/"));
+  }
+}
+
+function* watchSearchResult() {
+  yield takeEvery(SEARCH_REQUEST, SearchResult);
+}
+
+
+
+
+export default function* postSaga() {
+  yield all([
+    fork(watchLoadPosts),
+    fork(watchuploadPosts),
+    fork(watchloadPostDetail),
+    fork(watchDeletePost),
+    fork(watchPostEditLoad),
+    fork(watchPostEditUpload),
+    fork(watchCategoryFind),
+    fork(watchSearchResult),
+  ]);
+}

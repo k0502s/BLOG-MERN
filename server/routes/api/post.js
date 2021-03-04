@@ -65,9 +65,11 @@ router.post("/image", uploadS3.array("upload", 5), async (req, res, next) => {
 
 //api/post
 router.get('/', async(req, res) => {
-    const postFindResult = await Post.find()
-    console.log(postFindResult, "All Post Get")
-    res.json(postFindResult)
+    const postFindResult = await Post.find();
+    const categoryFindResult = await Category.find()
+    const result = { postFindResult, categoryFindResult}
+    
+    res.json(result)
 })
 
 
@@ -81,9 +83,9 @@ router.post('/', auth, uploadS3.none(), async(req, res, next) => {
         console.log(req, "req")
         const {title, contents, fileUrl, creator, category} = req.body;
         const newPost = await Post.create({
-            title: title, //키랑 값이 같아 하나로 통일 가능
-            contents: contents,//
-            fileUrl: fileUrl, //
+            title, //키랑 값이 같아 하나로 통일 가능
+            contents,//
+            fileUrl, //
             creator: req.user.id, //
             date: moment().format('YYYY-MM-DD hh:mm')
         }); //.exec(); 대신 await 사용한 것이다.
@@ -267,6 +269,25 @@ router.post("/:id/edit", auth, async (req, res, next) => {
   } catch (e) {
     console.log(e);
     next(e);
+  }
+});
+
+
+
+
+router.get('/category/:categoryName', async(req, res, next) => {
+  try{
+    const result = await Category.findOne({
+      categoryName: {
+        $regex: req.params.categoryName,
+        $options: 'i'
+      }
+    }, "posts").populate({path:"posts"})
+    console.log(result, "Category Find result")
+    res.send(result)
+  }catch(e) {
+    console.log(e)
+    next(e)
   }
 });
 

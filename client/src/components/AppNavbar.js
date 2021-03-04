@@ -11,10 +11,10 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch} from "react-redux";
-import { LOGOUT_REQUEST, POSTS_WRITE_REQUEST } from "../redux/types";
+import { LOGOUT_REQUEST, POSTS_WRITE_REQUEST, USER_LOADING_REQUEST } from "../redux/types";
 import LoginModal from "../components/auth/LoginModal";
 import RegisterModal from "../components/auth/RegisterModal";
-// import SearchInput from "./search/searchInput";
+import SearchInput from "./search/searchInput";
 
 const AppNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,9 +31,15 @@ const AppNavbar = () => {
     });
   }, [dispatch]);
 
+  
+
   useEffect(() => {
     setIsOpen(false);
-  }, [user]);
+    dispatch({
+      type: USER_LOADING_REQUEST,
+      payload: localStorage.getItem("token"),
+    });
+  }, [dispatch, user]);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -109,7 +115,7 @@ const AppNavbar = () => {
           </Link>
           <NavbarToggler onClick={handleToggle} />
           <Collapse isOpen={isOpen} navbar>
-            {/* <SearchInput isOpen={isOpen} /> */}
+            <SearchInput isOpen={isOpen} />
             <Nav className="ml-auto d-felx justify-content-around" navbar>
               {isAuthenticated ? authLink : guestLink}
             </Nav>

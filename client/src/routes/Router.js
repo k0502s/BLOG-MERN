@@ -4,11 +4,17 @@ import Footer from '../components/Footer'
 import AppNavbar from '../components/AppNavbar'
 import { Container } from "reactstrap";
 import { Switch, Route, Redirect } from "react-router-dom";
-import PostCardList from './nomalRoute/PostCardList';
-import PostWrite from './nomalRoute/PostWrite';
-import PostDetail from './nomalRoute/PostDetail';
-import Search from './nomalRoute/Search';
-import categoryResult from './nomalRoute/categoryResult';
+import PostCardList from './normalRoute/PostCardList';
+import PostWrite from './normalRoute/PostWrite';
+import PostDetail from './normalRoute/PostDetail';
+import Search from './normalRoute/Search';
+import categoryResult from './normalRoute/categoryResult';
+import PostEdit from "./normalRoute/PostEdit";
+import Profile from "./normalRoute/Profile"
+import {
+    EditProtectedRoute,
+    ProfileProtectedRoute,
+  } from "./protectedRoute/ProtectedRoute";
 // import Auth from "../hoc/auth"
 
 
@@ -25,8 +31,14 @@ const MyRouter = () => {
                   <Route path='/' exact component={PostCardList} />
                   <Route path='/post' exact component={PostWrite} />
                   <Route path='/post/:id' exact component={PostDetail} />
-                  <Route path='/post/category/categoryName' exact component={categoryResult} />
+                  <Route path='/post/category/:categoryName' exact component={categoryResult} />
                   <Route path='/search/:searchTerm' exact component={Search} />
+                  <EditProtectedRoute path="/post/:id/edit" exact component={PostEdit} />
+                  <ProfileProtectedRoute
+                    path="/user/:userName/profile"
+                    exact
+                    component={Profile}
+                    />
                   <Redirect from="*" to='/' />
              </Switch>
             </Container>

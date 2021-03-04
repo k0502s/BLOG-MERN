@@ -14,6 +14,9 @@ import {
     REGISTER_REQUEST,
     REGISTER_SUCCESS,
     REGISTER_FAILURE,
+    PASSWORD_EDIT_UPLOADING_REQUEST,
+    PASSWORD_EDIT_UPLOADING_SUCCESS,
+    PASSWORD_EDIT_UPLOADING_FAILURE,
   } from "../types";
 
 
@@ -28,6 +31,7 @@ import {
     errorMsg: "",
     successMsg: "",
     previousMatchMsg: "",
+    editsuccess: false
   };
 
         const authReducer = (state = initialState, action) => {
@@ -79,25 +83,6 @@ import {
                 userRole: null,
                 errorMsg: "",
             };
-
-                    
-            case CLEAR_ERROR_REQUEST:
-                return {
-                ...state,
-                };
-            case CLEAR_ERROR_SUCCESS:
-                return {
-                ...state,
-                errorMsg: "",
-                previousMatchMsg: "",
-                };
-            case CLEAR_ERROR_FAILURE:
-                return {
-                ...state,
-                errorMsg: "Clear Error Fail",
-                previousMatchMsg: "Clear Error Fail",
-                };
-
             case USER_LOADING_REQUEST:
                 return {
                   ...state,
@@ -121,8 +106,47 @@ import {
                   isLoading: false,
                   userRole: "",
                 };
-            default:
-                return state;             
+                case PASSWORD_EDIT_UPLOADING_REQUEST:
+                  return {
+                    ...state,
+                    isLoading: true,
+                  };
+                case PASSWORD_EDIT_UPLOADING_SUCCESS:
+                  return {
+                    ...state,
+                    isLoading: false,
+                    successMsg: action.payload.data.success_msg,
+                    errorMsg: "",
+                    previousMsg: "",
+                    editsuccess: true
+                  };
+                case PASSWORD_EDIT_UPLOADING_FAILURE:
+                  return {
+                    ...state,
+                    isLoading: false,
+                    successMsg: "",
+                    errorMsg: action.payload.data.fail_msg,
+                    previousMatchMsg: action.payload.data.match_msg,
+                  };
+                 case CLEAR_ERROR_REQUEST:
+                    return {
+                  ...state,
+                  };
+                 case CLEAR_ERROR_SUCCESS:
+                    return {
+                    ...state,
+                    errorMsg: "",
+                    previousMatchMsg: "",
+                    };
+                 case CLEAR_ERROR_FAILURE:
+                    return {
+                    ...state,
+                    errorMsg: "Clear Error Fail",
+                    previousMatchMsg: "Clear Error Fail",
+                    };
+
+              default:
+                  return state;             
     }
 };
 
