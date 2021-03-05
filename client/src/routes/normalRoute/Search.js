@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { SEARCH_REQUEST } from "../../redux/types";
 import { Row } from "reactstrap";
-import PostCardOne from "../../components/post/PostCardOne";
+import PostCardOne from "../../components/post/PostcardOne";
 
 const Search = () => {
   const dispatch = useDispatch();

@@ -4,7 +4,7 @@ import { POSTS_LOADING_REQUEST } from "../../redux/types";
 import { Helmet } from "react-helmet";
 import { Row, Alert } from "reactstrap";
 import { GrowingSpinner } from "../../components/spinner/Spinner";
-import PostCardOne from "../../components/post/PostCardOne";
+import PostCardOne from "../../components/post/PostcardOne"
 import Category from "../../components/post/Category";
 
 const PostCardList = () => {
