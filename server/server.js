@@ -3,6 +3,6 @@ import config from './config/index'
 
 const {PORT} = config
 
-app.listen('7001', () => { 
+app.listen('7002', () => { 
     console.log(`Server started on Port ${PORT}`);
 });
