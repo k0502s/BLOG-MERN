@@ -11,7 +11,11 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch} from "react-redux";
-import { LOGOUT_REQUEST, POSTS_WRITE_REQUEST, USER_LOADING_REQUEST } from "../redux/types";
+import { 
+  LOGOUT_REQUEST, 
+  POST_UPLOADING_REQUEST, 
+  USER_LOADING_REQUEST, 
+} from "../redux/types";
 import LoginModal from "../components/auth/LoginModal";
 import RegisterModal from "../components/auth/RegisterModal";
 import SearchInput from "./search/searchInput";
@@ -32,24 +36,35 @@ const AppNavbar = () => {
   }, [dispatch]);
 
   
-
   useEffect(() => {
     setIsOpen(false);
+  }, []);
+
+
+  useEffect(() => {
+    
     dispatch({
       type: USER_LOADING_REQUEST,
       payload: localStorage.getItem("token"),
     });
   }, [dispatch, user]);
 
+
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
 
-  // const addPostClick = () => {
-  //   dispatch({
-  //     type: POSTS_WRITE_REQUEST,
-  //   });
-  // };
+  const addPostClick = () => {
+    dispatch({
+      type: POST_UPLOADING_REQUEST,
+    });
+  };
+
+  const addPasswordEditClick = () => {
+    dispatch({
+      type: POST_UPLOADING_REQUEST,
+    });
+  }
 
   const authLink = (
     <Fragment>
@@ -59,7 +74,7 @@ const AppNavbar = () => {
             <Link
               to="/post"
               className="btn btn-success block text-white px-3"
-              // onClick={addPostClick}
+              onClick={addPostClick}
             >
               Add Post
             </Link>
@@ -71,7 +86,7 @@ const AppNavbar = () => {
       <NavItem className="d-flex justify-content-center">
         <Form className="col mt-2">
           {user && user.name ? (
-            <Link to={`/user/${user.name}/profile`}>
+            <Link to={`/user/${user.name}/profile`} onClick={addPasswordEditClick}>
               <Button outline color="light" className="px-3" block>
                 <strong>{user ? `Welcome ${user.name}` : ""}</strong>
               </Button>

@@ -4,7 +4,7 @@ import config from './config';
 import hpp from 'hpp';
 import helmet from 'helmet';
 import cors from "cors";
-
+import path from "path";
 
 //Routes
 import postRoutes from './routes/api/post';
@@ -17,6 +17,8 @@ import morgan from 'morgan';
 
 const app = express();
 const { MONGO_URI } = config;
+
+const prod = process.env.NODE_ENV === "production";
 
 app.use(hpp());
 app.use(helmet());
@@ -39,10 +41,19 @@ mongoose.connect(MONGO_URI, {
 
 
 // Use routes
-app.get('/');
+
 app.use("/api/post", postRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/search", searchRoutes);
+
+
+if (prod) {
+    app.use(express.static(path.join(__dirname, "../client/build")));
+    app.get("*", (req, res) => {
+      res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
+    });
+  }
+  
 
 export default app;

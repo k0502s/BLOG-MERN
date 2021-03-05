@@ -31,7 +31,7 @@ import {
     errorMsg: "",
     successMsg: "",
     previousMatchMsg: "",
-    editsuccess: false
+    editsuccess: false,
   };
 
         const authReducer = (state = initialState, action) => {

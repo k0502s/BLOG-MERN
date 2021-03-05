@@ -41,7 +41,7 @@ export default function(state = initialState, action) {
         case POSTS_LOADING_REQUEST:
             return {
                 ...state,
-                posts: [],
+                // posts: [], 
                 loading: true,
             }
         case POSTS_LOADING_SUCCESS:
@@ -49,6 +49,7 @@ export default function(state = initialState, action) {
                ...state,
                 posts: [...state.posts, ...action.payload.postFindResult],
                 categoryFindResult: action.payload.categoryFindResult,
+                postCount: action.payload.postCount,
                 loading: false,
                 }
         case POSTS_LOADING_FAILURE:
@@ -94,26 +95,28 @@ export default function(state = initialState, action) {
                     loading: false,
                 };
         case POST_EDIT_LOADING_REQUEST:
-             return {
-                      ...state,
-                      posts: [],
-                      loading: true,
-                    };
+                  return {
+                    ...state,
+                    posts: [],
+                    loading: true,
+                  };
         case POST_EDIT_LOADING_SUCCESS:
-            return {
-                      ...state,
-                      postDetail: action.payload,
-                      loading: false,
-                    };
+                  return {
+                    ...state,
+                    postDetail: action.payload,
+            
+                    loading: false,
+                  };
         case POST_EDIT_LOADING_FAILURE:
-            return {
-                      ...state,
-                      error: action.payload,
-                      loading: false,
-                    };
+                  return {
+                    ...state,
+                    error: action.payload,
+                    loading: false,
+                  };
         case POST_EDIT_UPLOADING_REQUEST:
              return {
                       ...state,
+                      posts: [],
                       loading: true,
                     };
         case POST_EDIT_UPLOADING_SUCCESS:
