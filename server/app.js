@@ -19,6 +19,7 @@ import morgan from 'morgan';
 const app = express();
 const { MONGO_URI } = config;
 
+const prod = process.env.NODE_ENV === "production";
 
 app.use(hpp());
 app.use(helmet());
@@ -48,24 +49,25 @@ app.use("/api/auth", authRoutes);
 app.use("/api/search", searchRoutes);
 
 
-// Serve static assets if in production
-if (process.env.NODE_ENV === "production") {
+// // Serve static assets if in production
+// if (process.env.NODE_ENV === "production") {
 
-  // Set static folder
-  app.use(express.static("client/build"));
+//   // Set static folder
+//   app.use(express.static("client/build"));
 
-  // index.html for all page routes
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
-  });
-}
-// const prod = process.env.NODE_ENV === "production";
-// if (prod) {
-//     app.use(express.static(path.join(__dirname, "../client/build")));
-//     app.get("*", (req, res) => {
-//       res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
-//     });
-//   }
+//   // index.html for all page routes
+//   app.get("*", (req, res) => {
+//     res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
+//   });
+// }
+
+
+if (prod) {
+    app.use(express.static(path.join(__dirname, "../client/build")));
+    app.get("*", (req, res) => {
+      res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
+    });
+  }
   
 
 export default app;
