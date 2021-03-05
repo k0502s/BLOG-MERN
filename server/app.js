@@ -5,6 +5,7 @@ import hpp from 'hpp';
 import helmet from 'helmet';
 import cors from "cors";
 import path from "path";
+import "@babel/polyfill"
 
 //Routes
 import postRoutes from './routes/api/post';
