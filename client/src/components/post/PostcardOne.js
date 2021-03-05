@@ -50,4 +50,4 @@ const PostCardOne = ({ posts }) => {
   );
 };
 
-export default PostCardOne;
+export default PostCardOne; 
